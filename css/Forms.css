@@ -1,0 +1,150 @@
+/* Fuente Poppins */
+@font-face {
+    font-family: "PoppinsBold";
+    src: url(../assets/font/Poppins-Bold.ttf);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start; /* Mantiene los elementos alineados a la izquierda */
+    align-items: center;
+    min-height: 100vh;
+    font-family: "PoppinsBold";
+    position: relative; /* Necesario para las posiciones absolutas de los elementos */
+    background-color: #C1D7D4;
+}
+
+.contenedorPrincipal {
+    width: 350px;
+    height: 500px;
+    background: #E63A33;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-left: 10%; /* Para alinearse con el logo */
+    z-index: 2; /* Asegura que esté sobre la imagen derecha */
+}
+
+#checkboxOculto {
+    display: none; /* Oculta el checkbox para posteriormente hacer la animacion */
+}
+
+.formularioRegistro {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.etiquetaFormulario {
+    color: #E0DEDE;
+    font-size: 31px;
+    justify-content: center;
+    display: flex;
+    margin: 51px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+
+.campoTexto {
+    width: 60%;
+    height: 10px;
+    background: #E0DEDE;
+    justify-content: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 12px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.botonFormulario {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    display: block;
+    color: #E63A33;
+    background: #E9E9E9;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 30px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: 0.1s ease-in;
+    cursor: pointer;
+}
+
+.botonFormularioLogin {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    display: block;
+    color: #E9E9E9;
+    background: #E63A33;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 30px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: 0.1s ease-in;
+    cursor: pointer;
+}
+
+.botonFormulario:hover {
+    background-color: #C7C7C7;
+}
+
+.botonFormularioLogin:hover {
+    background-color: #dd2f29;
+}
+
+.formularioLogin {
+    height: 460px;
+    background: #EEE;
+    border-radius: 60% / 10%;
+    transform: translateY(-180px);
+    transition: 0.8s ease-in-out;
+}
+
+.formularioLogin .etiquetaFormulario {
+    color: #E63A33;
+    transform: scale(0.5);
+    margin-top: 60px;
+}
+
+#checkboxOculto:checked ~ .formularioLogin {
+    transform: translateY(-500px);
+}
+
+#checkboxOculto:checked ~ .formularioLogin .etiquetaFormulario {
+    transform: scale(0.7);
+}
+
+#checkboxOculto:checked ~ .formularioRegistro .etiquetaFormulario {
+    transform: scale(0.7);
+}
+
+.logo {
+    width: 250px;
+    position: absolute; /* Para posicionarlo sobre `.contenedorPrincipal` */
+    top: 13%;
+    left: 12.5%; /* Ajusta según sea necesario */
+    text-align: center; /* Centra la imagen en su contenedor */
+}
+
+.imagenLateral {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%; /* Ajusta este tamaño según prefieras */
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra todo sin deformarse */
+    z-index: 1; /* Se posiciona detrás del formulario y el logo */
+    background-color: #F3F3F3; /* Fondo mientras carga la imagen */
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- titulo de la web -->
+    <title>Página De Inicio</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/icon/favicon.png" type="image/x-icon">
+    <!-- CSS - Forms.css -->
+    <link rel="stylesheet" href="css/Forms.css">
+</head>
+<body>
+	<!-- contenedor del logo de la web -->
+    <div class="logoFormulario">
+        <img class="logo" src="assets/img/LogoNavbar.png" alt="Logo del sitio">
+    </div>
+    <br>
+	<!-- contenedor principal del checkbox oculto y los formularios -->
+    <div class="contenedorPrincipal">
+		<!-- checkbox oculto para la animacion del formulario -->
+        <input type="checkbox" id="checkboxOculto" aria-hidden="true">
+		<!-- contenedor del formulario de registrarse -->
+        <div class="formularioRegistro">
+            <form>
+                <label class="etiquetaFormulario" for="checkboxOculto" aria-hidden="true">Registro</label>
+                <input class="campoTexto" type="text" name="nombreUsuario" placeholder="Usuario" autocomplete="off">
+                <input class="campoTexto" type="email" name="correoElectronico" placeholder="Correo Electrónico" autocomplete="off">
+                <input class="campoTexto" type="password" name="contraseña" placeholder="Contraseña">
+                <button class="botonFormulario">Registrarse</button>
+            </form>
+        </div>
+		<!-- contenedor del formulario de iniciar sesion -->
+        <div class="formularioLogin">
+            <form>
+                <label class="etiquetaFormulario" for="checkboxOculto" aria-hidden="true">Inicio De Sesión</label>
+                <input class="campoTexto" type="email" name="correoElectronico" placeholder="Correo Electrónico" required="">
+                <input class="campoTexto" type="password" name="contraseña" placeholder="Contraseña" required="">
+                <button class="botonFormularioLogin">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+	<!-- imagen decorativa para el fondo del formulario -->
+    <img class="imagenLateral" src="assets/img/FondoForm.jpg" alt="Imagen decorativa">
+</body>
+</html>
