@@ -40,12 +40,17 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
 
 $conn->query($sql);
 
-// ? Insertamos los datos de los usuarios en la tabla usuarios
-$sql = "INSERT IGNORE INTO usuarios (dni, password, tipo_usuario) VALUES
-    ('12345678', 'password123', 'paciente'),
-    ('87654321', 'password456', 'medico')";
+// ! NO TOCAR: Verificamos si los usuarios de prueba ya existen
+$check_sql = "SELECT dni FROM usuarios WHERE dni IN ('12345678', '87654321')";
+$result = $conn->query($check_sql);
 
-$conn->query($sql);
+if ($result->num_rows == 0) {
+    // Insertamos los datos de los usuarios en la tabla usuarios solo si no existen
+    $sql = "INSERT INTO usuarios (dni, password, tipo_usuario) VALUES
+        ('12345678', 'password123', 'paciente'),
+        ('87654321', 'password456', 'medico')";
+    $conn->query($sql);
+}
 
 // ? Conslta para verificar el tipo de usuario y redirigir a la página correspondiente
 
@@ -76,7 +81,7 @@ if($result->num_rows > 0) {
         echo '<script>window.location.href = "../doctor.html";</script>';
     } else {
         // ! Redirigir a unknown-user.html
-        echo '<script>window.location.href = "unknown-user.html";</script>';
+        echo '<script>window.location.href = "../unknown-user.html";</script>';
     }
 } else {
         // ! Redirigir a unknown-user.html
