@@ -1,5 +1,4 @@
 <?php
-
 // ? Datos del formulario de index.hmtl validados con validation-index.js
 $dni = $_GET['dni']; // * DNI recibido del formulario
 $password = $_GET['password']; // * Contraseña recibida del formulario
@@ -37,7 +36,39 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
     password VARCHAR(50) NOT NULL,
     tipo_usuario ENUM('medico', 'paciente') NOT NULL 
 )";
+$conn->query($sql);
 
+// ? Crear la tabla de pacientes
+$sql = "CREATE TABLE IF NOT EXISTS paciente (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+    usuario_id INT(6) UNSIGNED NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    dni VARCHAR(30) NOT NULL UNIQUE,
+    fecha_de_nacimiento DATE NOT NULL,
+    tipo_usuario ENUM('paciente') NOT NULL,
+    contraseña VARCHAR(50) NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (dni) REFERENCES usuarios(dni),
+    FOREIGN KEY (contraseña) REFERENCES usuarios(password)
+)";
+$conn->query($sql);
+
+// ? Crear la tabla de medicos
+$sql = "CREATE TABLE IF NOT EXISTS medico (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+    usuario_id INT(6) UNSIGNED NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    dni VARCHAR(30) NOT NULL UNIQUE,
+    fecha_de_nacimiento DATE NOT NULL,
+    tipo_usuario ENUM('medico') NOT NULL,
+    contraseña VARCHAR(50) NOT NULL,
+    especialidad VARCHAR(50) NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (dni) REFERENCES usuarios(dni),
+    FOREIGN KEY (contraseña) REFERENCES usuarios(password)
+)";
 $conn->query($sql);
 
 // ! NO TOCAR: Verificamos si los usuarios de prueba ya existen
@@ -46,48 +77,37 @@ $result = $conn->query($check_sql);
 
 if ($result->num_rows == 0) {
     // Insertamos los datos de los usuarios en la tabla usuarios solo si no existen
-    $sql = "INSERT INTO usuarios (dni, password, tipo_usuario) VALUES
-        ('12345678', 'password123', 'paciente'),
-        ('87654321', 'password456', 'medico')";
-    $conn->query($sql);
+    $insert_sql = "INSERT INTO usuarios (dni, password, tipo_usuario) VALUES 
+    ('12345678', 'password1', 'medico'),
+    ('87654321', 'password2', 'paciente')";
+    $conn->query($insert_sql);
 }
 
-// ? Conslta para verificar el tipo de usuario y redirigir a la página correspondiente
+// Insertar 20 usuarios, 10 pacientes y 10 médicos
+$insert_sql = "INSERT INTO usuarios (dni, password, tipo_usuario) VALUES 
+('11111111', 'password1', 'paciente'),
+('22222222', 'password2', 'paciente'),
+('33333333', 'password3', 'paciente'),
+('44444444', 'password4', 'paciente'),
+('55555555', 'password5', 'paciente'),
+('66666666', 'password6', 'paciente'),
+('77777777', 'password7', 'paciente'),
+('88888888', 'password8', 'paciente'),
+('99999999', 'password9', 'paciente'),
+('10101010', 'password10', 'paciente'),
+('12121212', 'password11', 'medico'),
+('13131313', 'password12', 'medico'),
+('14141414', 'password13', 'medico'),
+('15151515', 'password14', 'medico'),
+('16161616', 'password15', 'medico'),
+('17171717', 'password16', 'medico'),
+('18181818', 'password17', 'medico'),
+('19191919', 'password18', 'medico'),
+('20202020', 'password19', 'medico'),
+('21212121', 'password20', 'medico')";
+$conn->query($insert_sql);
 
-    // * prepare: Prepara una sentencia SQL para ser ejecutada por el método execute()
-    // * bind_param: Une variables a una sentencia SQL
-    // * execute: Ejecuta la sentencia preparada
-    // * get_result: Obtiene un resultado de la sentencia preparada
-    // * ss: Tipo de datos de las variables que se van a unir a la sentencia SQL
+echo "Tablas creadas y usuarios insertados exitosamente.";
 
-$stmt = $conn->prepare("SELECT tipo_usuario FROM usuarios WHERE dni = ? AND password = ?"); // ! NO TOCAR: Funciona milagrosamente!
-$stmt->bind_param("ss", $dni, $password);
-$stmt->execute();
-$result = $stmt->get_result();
-
-// ? Verificamos si el usuario existe en la base de datos
-
-    // * fetch_assoc: Obtiene una fila de resultados como un array asociativo
-    // * echo '<script>window.location.href = "";</script>': Redirige a la página correspondiente con el echo de un script.
-
-if($result->num_rows > 0) {
-    $row = $result->fetch_assoc();  
-    $tipo_usuario = $row['tipo_usuario']; 
-    if($tipo_usuario === 'paciente') {
-        // ! Redirigir a paciente.html
-        echo '<script>window.location.href = "../patient.html";</script>';
-    } elseif($tipo_usuario === 'medico') {
-        // ! Redirigir a medico.html
-        echo '<script>window.location.href = "../doctor.html";</script>';
-    } else {
-        // ! Redirigir a unknown-user.html
-        echo '<script>window.location.href = "../unknown-user.html";</script>';
-    }
-} else {
-        // ! Redirigir a unknown-user.html
-    echo '<script>window.location.href = "../unknown-user.html";</script>';
-}
-// ? Cerramos la declaracion y la conexión a la base de datos
-$stmt->close();
 $conn->close();
 ?>
