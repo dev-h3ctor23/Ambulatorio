@@ -1,33 +1,47 @@
 <?php
-// ? Datos del formulario de index.hmtl validados con validation-index.js
-$dni = $_GET['dni']; // * DNI recibido del formulario
-$password = $_GET['password']; // * Contraseña recibida del formulario
+
+// ! NO TOCAR: Incluye el archivo authenticate.php
+include 'authenticate.php';
+
+// ? Variables que guardan los datos recibidos del formulario en index.html
+
+$dni = $_GET['dni']; 
+$password = $_GET['password']; 
 
 // ? Variables para la conexión a la base de datos
-$servername = "localhost"; // * Servidor de la base de datos
-$username = "root"; // * Usuario de la base de datos
-$dbpassword = ""; // * Contraseña de la base de datos
+
+$servername = "localhost"; 
+$username = "root"; 
+$dbpassword = ""; 
 $dbname = "ambulatorio"; // * Nombre de la base de datos
 
-// ? Declaramos la conexión a la base de datos
+// ? Declaración de la conexión a la base de datos 
+
 $conn = new mysqli($servername, $username, $dbpassword);
 
-// ? Verificamos la conexión a la base de datos
+// ? Verificacion de la conexión a la base de datos
+
 if ($conn->connect_error) {
-    die('Error de conexión a la base de datos: ' . $conn->connect_error); // * En caso de un error con la conexion a la base de datos se muestra un mensaje de error
+    die('Error de conexión a la base de datos: ' . $conn->connect_error); // ! Si no se puede conectar a la base de datos, se muestra un mensaje de error
 }
 
-// ? En caso de que la base de datos no exista, la creamos 
-$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
-$conn->query($sql); // * Ejecutamos la consulta guardada en la variable $sql para crear la base de datos
+// ? En el hipotetico caso de que no exista la base de datos, se crea la base de datos "ambulatorio" 
 
-// ? Seleccionamos la base de datos del ambulatorio
+$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
+$conn->query($sql);
+
+// ? Aqui se selecciona la base de datos "ambulatorio"
+
+    // * conn: Variable que guarda la conexión a la base de datos
+    // * -> : Operador de acceso a métodos y propiedades de un objeto
+    // * select_db: Método que selecciona la base de datos a la que se conectará
+
 $conn->select_db($dbname);
 
-// ? En caso de que no exista, creamos la tabla para los usuarios
+// ? Crear la tabla de usuarios
 
-    // * UNSIGNED: Solo permite valores positivos
     // * AUTO_INCREMENT: Incrementa el valor de la columna automáticamente
+    // * UNIQUE: No se pueden repetir los valores de la columna
     // * ENUM: Tipo de dato que permite especificar un conjunto de valores
 
 $sql = "CREATE TABLE IF NOT EXISTS usuarios (
@@ -39,6 +53,10 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
 $conn->query($sql);
 
 // ? Crear la tabla de pacientes
+
+    // * FOREIGN KEY: Clave foránea que establece una relación entre dos tablas
+    // * REFERENCES: Establece la relación entre la clave foránea y la clave primaria de otra tabla
+
 $sql = "CREATE TABLE IF NOT EXISTS paciente (
     id INT AUTO_INCREMENT PRIMARY KEY, 
     usuario_id INT NOT NULL,
@@ -50,6 +68,7 @@ $sql = "CREATE TABLE IF NOT EXISTS paciente (
 $conn->query($sql);
 
 // ? Crear la tabla de medicos
+
 $sql = "CREATE TABLE IF NOT EXISTS medico (
     id INT AUTO_INCREMENT PRIMARY KEY, 
     usuario_id INT NOT NULL,
@@ -61,17 +80,24 @@ $sql = "CREATE TABLE IF NOT EXISTS medico (
 )";
 $conn->query($sql);
 
-// Verificamos si los usuarios de prueba ya existen
+// ! IMPORTANTE: $check_sql: Consulta para verificar si los datos de los usuarios ya existen en la tabla usuarios
+
 $check_sql = "SELECT dni FROM usuarios WHERE dni IN (
     '45328901', '56437802', '67548903', '78659004', '89760105', 
     '90871206', '01982307', '12093408', '23104509', '34215610', 
     '45326711', '56437812', '67548913', '78659014', '89760115', 
     '90871216', '01982317', '12093418', '23104519', '34215620'
 )";
+
+// ? Verificar si los datos de los usuarios ya existen en la tabla usuarios
+
+    // * num_rows: Propiedad que devuelve el número de filas de un resultado
+    // * query: Método que ejecuta una consulta a la base de datos
+
 $result = $conn->query($check_sql);
 
 if ($result->num_rows == 0) {
-    // Insertamos los datos de los usuarios en la tabla usuarios solo si no existen
+
     $insert_sql = "INSERT INTO usuarios (dni, password, tipo_usuario) VALUES 
     ('45328901', '45328901', 'paciente'),
     ('56437802', '56437802', 'paciente'),
@@ -93,13 +119,15 @@ if ($result->num_rows == 0) {
     ('12093418', '12093418', 'medico'),
     ('23104519', '23104519', 'medico'),
     ('34215620', '34215620', 'medico')
+
     ON DUPLICATE KEY UPDATE password=VALUES(password), tipo_usuario=VALUES(tipo_usuario)";
     $conn->query($insert_sql);
 }
 
-// Insertar datos en la tabla paciente
+// ? Datos de los pacientes guardados en un array
+
 $pacientes = [
-    ['45328901', 'Juan', 'Pérez', '1987-03-15'],
+    ['45328901', 'Juan', 'Perez', '1987-03-15'],
     ['56437802', 'María', 'Gómez', '1990-07-25'],
     ['67548903', 'Luis', 'Martínez', '1992-11-02'],
     ['78659004', 'Ana', 'Rodríguez', '1985-05-14'],
@@ -112,6 +140,7 @@ $pacientes = [
 ];
 
 // ? Insertamos los datos de los pacientes en la tabla paciente solo si no existen
+
 foreach ($pacientes as $paciente) {
     $check_sql = "SELECT * FROM paciente WHERE usuario_id = (SELECT id FROM usuarios WHERE dni = '{$paciente[0]}')";
     $result = $conn->query($check_sql);
@@ -122,6 +151,7 @@ foreach ($pacientes as $paciente) {
     }
 }
 
+// ? Datos de los medicos guardados en un array
 
 $medicos = [
     ['45326711', 'Pedro', 'González', '1980-06-15', 'Cardiología'],
@@ -136,7 +166,7 @@ $medicos = [
     ['34215620', 'Patricia', 'Rojas', '1986-10-05', 'Traumatología']
 ];
 
-// ? Insertamos los datos de los medicos en la tabla medico solo si no existen
+// Insertamos los datos de los medicos en la tabla medico solo si no existen
 foreach ($medicos as $medico) {
     $check_sql = "SELECT * FROM medico WHERE usuario_id = (SELECT id FROM usuarios WHERE dni = '{$medico[0]}')";
     $result = $conn->query($check_sql);
@@ -147,39 +177,9 @@ foreach ($medicos as $medico) {
     }
 }
 
-// ? Conslta para verificar el tipo de usuario y redirigir a la página correspondiente
-    // * prepare: Prepara una sentencia SQL para ser ejecutada por el método execute()
-    // * bind_param: Une variables a una sentencia SQL
-    // * execute: Ejecuta la sentencia preparada
-    // * get_result: Obtiene un resultado de la sentencia preparada
-    // * ss: Tipo de datos de las variables que se van a unir a la sentencia SQL
-    $stmt = $conn->prepare("SELECT tipo_usuario FROM usuarios WHERE dni = ? AND password = ?"); // ! NO TOCAR: Funciona milagrosamente!
-    $stmt->bind_param("ss", $dni, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// Llamar a la función de autenticación
+authenticate($dni, $password, $conn);
 
-    // ? Verificamos si el usuario existe en la base de datos
-        // * fetch_assoc: Obtiene una fila de resultados como un array asociativo
-        // * echo '<script>window.location.href = "";</script>': Redirige a la página correspondiente con el echo de un script.
-    if($result->num_rows > 0) {
-        $row = $result->fetch_assoc();  
-        $tipo_usuario = $row['tipo_usuario']; 
-        if($tipo_usuario === 'paciente') {
-            // ! Redirigir a paciente.html
-            echo '<script>window.location.href = "../patient.html";</script>';
-        } elseif($tipo_usuario === 'medico') {
-            // ! Redirigir a medico.html
-            echo '<script>window.location.href = "../doctor.html";</script>';
-        } else {
-            // ! Redirigir a unknown-user.html
-            echo '<script>window.location.href = "unknown-user.html";</script>';
-        }
-    } else {
-            // ! Redirigir a unknown-user.html
-        echo '<script>window.location.href = "../unknown-user.html";</script>';
-    }
-
-// ? Cerramos la declaracion y la conexión a la base de datos
-$stmt->close();
+// Cerramos la conexión a la base de datos
 $conn->close();
 ?>
