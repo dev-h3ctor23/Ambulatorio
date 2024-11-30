@@ -55,12 +55,12 @@ document.getElementById('password').addEventListener('blur', validarPassword);
 // * window.location.href: Propiedad que devuelve la URL de la página actual.
 
 document.getElementById('loginForm').addEventListener('submit', function (event) {
-    if (!validarDNI() || !validarPassword()) {
-        event.preventDefault();
+    if (!validarDNI() || !validarPassword()) { // * Si la validación del DNI o la contraseña falla
+        event.preventDefault(); // * Detener el envío del formulario
     } else {
-        var dni = document.getElementById('dni').value;
+        var dni = document.getElementById('dni').value; 
         var password = document.getElementById('password').value;
-        // Utiliza encodeURIComponent para asegurar que los datos se envían correctamente
+        // * Redirigir a la página de conexión con los parámetros DNI y Contraseña
         window.location.href = 'conection.php?dni=' + encodeURIComponent(dni) + '&password=' + encodeURIComponent(password);
     }
 });

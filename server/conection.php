@@ -166,20 +166,30 @@ $medicos = [
     ['34215620', 'Patricia', 'Rojas', '1986-10-05', 'Traumatología']
 ];
 
-// Insertamos los datos de los medicos en la tabla medico solo si no existen
+// ? Insertamos los datos de los medicos en la tabla medico solo si no existen
+
+
 foreach ($medicos as $medico) {
+
+    // ! IMPORTANTE: $check_sql: Consulta para verificar si los datos de los medicos ya existen en la tabla medico
+    // * $result: Variable que guarda el resultado de la consulta
+
     $check_sql = "SELECT * FROM medico WHERE usuario_id = (SELECT id FROM usuarios WHERE dni = '{$medico[0]}')";
     $result = $conn->query($check_sql);
-    if ($result->num_rows == 0) {
+
+    if ($result->num_rows == 0) { // * Si no existen los datos del medico en la tabla medico, se insertan los datos
+
         $insert_sql = "INSERT INTO medico (usuario_id, nombre, apellido, fecha_de_nacimiento, especialidad) VALUES 
         ((SELECT id FROM usuarios WHERE dni='{$medico[0]}'), '{$medico[1]}', '{$medico[2]}', '{$medico[3]}', '{$medico[4]}')";
         $conn->query($insert_sql);
     }
 }
 
-// Llamar a la función de autenticación
+// ? Llamamos a la función authenticate para autenticar al usuario
+
 authenticate($dni, $password, $conn);
 
-// Cerramos la conexión a la base de datos
+// ! IMPORTANTE: Cerrar la conexión a la base de datos
+
 $conn->close();
 ?>
