@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+.toggle-header {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.toggle-content {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.toggle-content p,
+.toggle-content ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.toggle-content ul li {
+    margin-bottom: 10px;
+}
+
+.toggle-content button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.toggle-content button:hover {
+    background-color: #333;
+}
+
+/* Estilos para el formulario de pedir cita */
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.appointment-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.appointment-form input,
+.appointment-form select,
+.appointment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.appointment-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.appointment-form button:hover {
+    background-color: #333;
+}
+
+/* Estilos para la sección de pedir cita */
+.request-appointment {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.request-appointment h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.request-appointment form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.request-appointment label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.request-appointment input {
+    width: 93%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.request-appointment select {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.request-appointment textarea {
+    width: 93%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.request-appointment button {
+    width: 95%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.request-appointment button:hover {
+    background-color: #333;
+}
+
+/* Estilos para los mensajes de error */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

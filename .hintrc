@@ -3,7 +3,6 @@
     "development"
   ],
   "hints": {
-    // ! NO TOCAR: Desactiva la advertencia sobre el uso de estilos en línea
     "no-inline-styles": "off"
   }
 }
